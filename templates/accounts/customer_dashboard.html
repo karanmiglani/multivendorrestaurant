@@ -1,0 +1,6 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>This is dashboard of {{user.username}}</h1>
+<h1>This is dashboard of {{user.get_role}}</h1>
+{% include 'includes/alerts.html' %}
+{% endblock %}

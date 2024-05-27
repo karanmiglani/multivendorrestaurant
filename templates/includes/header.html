@@ -32,12 +32,23 @@
                             </ul>
                             </div>
                     </div>
+
+                    {% if not user.is_authenticated %}
                     <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                         <div class="login-option">
-                            <a class="cs-color cs-popup-joinus-btn login-popup" data-target="#sign-in" data-toggle="modal" href="">Login / <span><a href="{% url 'register-user' %}" class="cs-color cs-popup-joinus-btn" style="text-decoration: none; color: black;" > Register</a></span></a>
+                            <a class="cs-color cs-popup-joinus-btn login-popup"  href="{% url 'login' %}">Login / <span><a href="{% url 'register-user' %}" class="cs-color cs-popup-joinus-btn" style="text-decoration: none; color: black;" > Register</a></span></a>
                             <a class="get-start-btn" href="{% url 'register-vendor' %}">Register Restaurant </a>
                         </div>
                     </div>
+                    {% endif %}
+                    {% if user.is_authenticated %}
+                    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                        <div class="login-option">
+                            <a class="cs-color cs-popup-joinus-btn login-popup" data-target="#sign-in" data-toggle="modal" href="{% url 'myAccount' %}">My Acconut </a>
+                            <a class="get-start-btn" href="{% url 'logout' %}">Logout </a>
+                        </div>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
