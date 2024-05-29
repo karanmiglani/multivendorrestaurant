@@ -1,18 +1,23 @@
-.show-notifications{
+.show-notifications {
     position: fixed;
-    top: 100%;
+    top: 100%;  /* Initially off-screen */
     right: 20px;
     animation-name: show-toast;
     animation-duration: 5s;
-
+    animation-fill-mode: forwards; /* Ensures it stays hidden after animation */
 }
 
-@keyframes show-toast{
-    0%{
-        top: -100%;
+@keyframes show-toast {
+    0% {
+        top: 100%;  /* Start from off-screen */
     }
-    20%{bottom : 100px; }
-    80%{bottom: 100px;}
-    100%{bottom: -100%;}
+    20% {
+        top: calc(100% - 120px); /* Adjust as needed for how far you want the toast to appear on-screen */
+    }
+    80% {
+        top: calc(100% - 120px); /* Keep it on-screen for a while */
+    }
+    100% {
+        top: 100%; /* Move it back off-screen */
+    }
 }
-

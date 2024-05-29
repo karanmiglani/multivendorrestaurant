@@ -104,4 +104,12 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return self.user.email
+    
+    def full_address(self):
+        if self.address_line_1 and self.address_line_2 is not None:
+            return f'{self.address_line_1} , {self.address_line_2}'
+        elif self.address_line_1 is not None and self.address_line_2 is None:
+            return f'{self.address_line_1}'
+        elif self.address_line_1 is None and self.address_line_2 is not None:
+            return f'{self.address_line_2}'
 

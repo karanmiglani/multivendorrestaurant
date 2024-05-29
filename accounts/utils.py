@@ -36,15 +36,12 @@ def send_verification_mail(request , user , mail_subject , template_name):
 
 
 
-def send_password_reset_email(request , user):
-    current_site = get_current_site(request)
-    mail_subject = 'Reset your password'
-    message = render_to_string('accounts/emails/reset_password_email.html',{
-        'user':user,
-        'domain':current_site,
-        'uid':urlsafe_base64_encode(force_bytes(user.pk)),
-        'token':default_token_generator.make_token(user)
-    })
-    to_email = user.email
-    mail = EmailMessage(mail_subject , message , to=[to_email])
-    mail.send()
+
+def send_notification(mail_subject , mail_template , context):
+    try:
+        message = render_to_string(mail_template , context)
+        to_email = context['user'].email
+        mail = EmailMessage(mail_subject ,message , to=[to_email])
+        mail.send()
+    except TemplateDoesNotExist as e:
+        print(f"Template {mail_template} doesnot exist")

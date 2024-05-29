@@ -4,6 +4,6 @@ from .models import Vendor
 
 class CustomVendorAdmin(admin.ModelAdmin):
     list_display = ('user_profile' , 'vendor_name' ,'is_approved' ,'created_at')
-
+    list_editable = ('is_approved',)
 
 admin.site.register(Vendor , CustomVendorAdmin)
