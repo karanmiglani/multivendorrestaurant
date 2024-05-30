@@ -90,8 +90,7 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User ,on_delete=models.CASCADE,blank=True,null=True)
     profile_picture = models.ImageField(upload_to='user/profile_pictures',blank=True , null=True)
     cover_photo = models.ImageField(upload_to='user/cover_photo',blank=True , null=True)
-    address_line_1 =  models.CharField(max_length=50,blank=True,null=True)
-    address_line_2 =  models.CharField(max_length=50,blank=True,null=True)
+    address =  models.CharField(max_length=500,blank=True,null=True)
     country = models.CharField(max_length=50,blank=True,null=True)
     state = models.CharField(max_length=50,blank=True,null=True)
     city = models.CharField(max_length=50,blank=True,null=True)
@@ -105,11 +104,11 @@ class UserProfile(models.Model):
     def __str__(self):
         return self.user.email
     
-    def full_address(self):
-        if self.address_line_1 and self.address_line_2 is not None:
-            return f'{self.address_line_1} , {self.address_line_2}'
-        elif self.address_line_1 is not None and self.address_line_2 is None:
-            return f'{self.address_line_1}'
-        elif self.address_line_1 is None and self.address_line_2 is not None:
-            return f'{self.address_line_2}'
+    # def full_address(self):
+    #     if self.address_line_1 and self.address_line_2 is not None:
+    #         return f'{self.address_line_1} , {self.address_line_2}'
+    #     elif self.address_line_1 is not None and self.address_line_2 is None:
+    #         return f'{self.address_line_1}'
+    #     elif self.address_line_1 is None and self.address_line_2 is not None:
+    #         return f'{self.address_line_2}'
 
