@@ -41,7 +41,8 @@ INSTALLED_APPS = [
 
     
     'accounts',
-    'vendor'
+    'vendor',
+    'menu'
 ]
 
 MIDDLEWARE = [
@@ -68,6 +69,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'onlinefood_main.context_processor.get_vendor',
+                'onlinefood_main.context_processor.get_goole_api_key',
             ],
         },
     },
@@ -148,3 +150,4 @@ EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = config('EMAIL_USE_TLS' ,cast = bool)
 DEFAULT_FROM_EMAIL = 'Online food ordering system <karanmiglani03@gmail.com>'
+GOOGLE_API_KEY = 'AIzaSyBkBaWZnT0HiiUBTNLqtNVxLvAITj4M50Y'
