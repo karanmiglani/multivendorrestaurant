@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="main-section">
+    {% include 'includes/cover.html' %}
+    <div class="page-section account-header buyer-logged-in">
+        <div class="container">
+            <div class="row">
+            {% include 'includes/vendor_sidebar.html' %}
+                <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+                    <div class="user-dashboard loader-holder">
+                        <div class="user-holder">
+                            {% include 'includes/alerts.html' %}
+                            <h5 class="text-uppercase text-center">build Your Menu</h5>
+                            <hr>
+                            <h6>Add New Food Item to Category</h6>
+                            <!-- My Restaurants Form Start -->
+                            {% if form.non_field_errors %}
+                           <div class="alert alert-danger">
+                            {{ form.non_field_errors }} 
+                           </div>
+                            {% endif %}
+                            <form action="{% url 'add-food-item' %}" method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div class="form-fields-set">
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-6 col-sm-12">
+                                            <div class="field-holder">
+                                                <label>Category Name *</label>
+                                                {{form.category}}
+                                            </div>
+                                            <label class="text-danger">{{form.category.errors}}</label>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-12">
+                                            <div class="field-holder">
+                                                <label>Item Name *</label>
+                                                {{form.product_title}}
+                                            </div>
+                                            <label class="text-danger">{{form.product_title.errors}}</label>
+                                        </div>
+                                       
+                                        <div class="col-lg-6 col-md-6 col-sm-12">
+                                            <div class="field-holder">
+                                                <label>Price *</label>
+                                                {{form.price}}
+                                            </div>
+                                            <label class="text-danger">{{form.price.errors}}</label>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-12">
+                                            <div class="field-holder">
+                                                <label>Product Image *</label>
+                                                {{form.image}}
+                                            </div>
+                                            <label class="text-danger">{{form.image.errors}}</label>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-12">
+                                            <div class="field-holder">
+                                                <label>Is Available? *</label>
+                                                {{form.is_available}}
+                                            </div>
+                                            <label class="text-danger">{{form.is_available.errors}}</label>
+                                        </div>
+                                        <div class="col-lg-12 col-md-12 col-sm-12">
+                                            <div class="field-holder">
+                                                <label>Description *</label>
+                                                {{form.description}}
+                                            </div>
+                                            <label class="text-danger">{{form.category_description.errors}}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                              
+                                <button type="submit" class="btn btn-info"><i class="fa fa-check" aria-hidden="true"></i> Create</button>
+                            </form>
+                            <!-- My Restaurants Form End -->
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

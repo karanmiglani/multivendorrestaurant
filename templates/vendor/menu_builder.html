@@ -15,16 +15,16 @@
                             <h5 class="text-uppercase text-center">build Your Menu</h5>
                             <hr>
                             <h6>Menu Categories</h6>
-                            <a href="#" class="btn btn-success float-right m-1">Add Food Item</a>
+                            <a href="{% url 'add-food-item' %}" class="btn btn-success float-right m-1">Add Food Item</a>
                             <a href="{% url 'add-category' %}" class="btn btn-info float-right m-1">Add Category</a>
                             <br><br>
                             <!-- My Restaurants Form Start -->
-                            <table class="table table-bordered table-hover">
+                            <table class="table table-bordered table-hover table-fit">
                                 <thead>
                                   <tr>
                                     <th scope="col">#</th>
                                     <th scope="col">Category Name</th>
-                                    <th scope="col">Vendor Name</th>
+                                    <th scope="col" >Vendor Name</th>
                                     <th scope="col">Created At</th>
                                     <th scope="col">Updated At</th>
                                     <th scope="col">Actions</th>
@@ -34,13 +34,13 @@
                                     {% for cat in category %}
                                   <tr>
                                     <th scope="row">{{ forloop.counter }}</th>
-                                    <td>
+                                    <td class="text-nowrap">
                                         <a href="{% url 'food-items-by-category' cat.id %}" style="text-decoration: none;">{{cat.category_name}}</a>
                                     </td>
-                                    <td>{{ cat.vendor.vendor_name }}</td>
-                                    <td>{{ cat.created_at}} </td>
-                                    <td>{{ cat.updated_at}} </td>
-                                    <td>
+                                    <td class="text-nowrap">{{ cat.vendor.vendor_name }}</td>
+                                    <td class="text-nowrap">{{ cat.created_at}} </td>
+                                    <td class="text-nowrap">{{ cat.updated_at}} </td>
+                                    <td class="text-nowrap">
                                         <a href="{% url 'edit-category' cat.id %}" style="text-decoration: none; color: blue;">Edit</a>&nbsp;&nbsp;
                                         <a href="{% url 'delete-category' cat.id %}" style="text-decoration: none; color: red;">Delete</a>
                                     </td>

@@ -17,8 +17,8 @@
                             <h6>Category: <span class="text-uppercase text-success">{{category}}</span> </h6>
                             <button type="button" class="btn btn-secondary" onclick="window.history.back()"><i class="fa fa-angle-left" aria-hidden="true"></i>&nbsp;Back</button>
                             {% if foodItems %}
-                            <a href="#" class="btn btn-success float-right m-1">Add Food Item</a>
-                            <a href="#" class="btn btn-info float-right m-1">Add Category</a>
+                            <a href="{% url 'add-food-item' %}" class="btn btn-success float-right m-1">Add Food Item</a>
+                            <a href="{% url 'add-category' %}" class="btn btn-info float-right m-1">Add Category</a>
                             <br><br>
                             <!-- My Restaurants Form Start -->
                             
@@ -48,8 +48,8 @@
                                   
                                     <td>{{ item.updated_at}} </td>
                                     <td>
-                                        <a href="" style="text-decoration: none; color: blue;">Edit</a>&nbsp;&nbsp;
-                                        <a href="" style="text-decoration: none; color: red;">Delete</a>
+                                        <a href="{% url 'edit-food-item' item.id %}" style="text-decoration: none; color: blue;">Edit</a>&nbsp;&nbsp;
+                                        <a href="{% url 'delete-food-item' item.id %}" style="text-decoration: none; color: red;">Delete</a>
                                     </td>
                                   </tr>
                                 {% endfor %}
