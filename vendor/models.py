@@ -1,11 +1,15 @@
 from django.db import models
 from accounts.models import User , UserProfile
 from accounts.utils import send_notification
+from django.template.defaultfilters import slugify
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
 # Create your models here.
 class Vendor(models.Model):
     user = models.OneToOneField(User , on_delete=models.CASCADE , blank=True , null=True , related_name='user')
     user_profile = models.OneToOneField(UserProfile , on_delete=models.CASCADE , related_name='user_profile')
     vendor_name = models.CharField(max_length=150)
+    slug = models.SlugField(max_length=500 , unique=True)
     vendor_licence = models.ImageField(upload_to='vendor/liscence')
     is_approved = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -31,6 +35,6 @@ class Vendor(models.Model):
                 else:
                     mail_subject = 'Sorry! You are not eligible for publishing food menu on our marketplace'
                     send_notification(mail_subject , mail_template , context)
-        
+        self.slug = f"{slugify(self.vendor_name)}-{urlsafe_base64_encode(force_bytes(self.user.id))}"
         return super(Vendor , self).save(*args , **kwargs)
     

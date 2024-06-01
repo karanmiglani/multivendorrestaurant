@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     
     'accounts',
     'vendor',
-    'menu'
+    'menu',
+    'marketplce'
 ]
 
 MIDDLEWARE = [
@@ -70,6 +71,9 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'onlinefood_main.context_processor.get_vendor',
                 'onlinefood_main.context_processor.get_goole_api_key',
+                'onlinefood_main.context_processor.getCartCounter',
+                'onlinefood_main.context_processor.getCartAmount',
+                # 'marketplce.context_processor.py.getCartCounter',
             ],
         },
     },

@@ -68,7 +68,7 @@ def registerUser(request):
 def registerVendor(request):
     if request.user.is_authenticated:
         messages.add_message(request , messages.WARNING , 'You are already registered!')
-        return redirect('dashboard')
+        return redirect('myAccount')
     elif request.method == "POST":
         userForm = UserForm(request.POST)
         form = VendorForm(request.POST , request.FILES)
@@ -92,10 +92,11 @@ def registerVendor(request):
             vendor.save()
             mail_subject = 'Activate your account'
             template_name = 'accounts/emails/account_verification_email.html'
-            send_verification_mail(request , user , mail_subject , template_name)
+            # send_verification_mail(request , user , mail_subject , template_name)
             messages.add_message(request , messages.SUCCESS , 'Your account has been registered with us! Please wait for the admin approval.')
             return redirect('register-user')
         else:
+            
             print('invalid_form')
             print('Error')
     else:

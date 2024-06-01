@@ -19,11 +19,11 @@ class Category(models.Model):
         ]
 
     def save(self, *args, **kwargs):
+        vendor_name = slugify(self.vendor.vendor_name)
+        self.slug = f"{slugify(self.category_name)}-{vendor_name}"
         if not self.id:
             # Object is being created for the first time
             super().save(*args, **kwargs)  # Save the object to generate an ID
-            vendor_name = slugify(self.vendor.vendor_name)
-            self.slug = f"{slugify(self.category_name)}-{vendor_name}"  # Update slug with ID
             self.save(update_fields = ['slug'])  # Print slug here to verify
         else:
             super().save(*args, **kwargs)  # For updating existing objects
@@ -39,7 +39,7 @@ class Category(models.Model):
 
 class Product(models.Model):
     vendor = models.ForeignKey(Vendor , on_delete=models.CASCADE)
-    category = models.ForeignKey(Category , on_delete=models.CASCADE)
+    category = models.ForeignKey(Category , on_delete=models.CASCADE , related_name='product')
     product_title = models.CharField(max_length=100)
     slug = models.SlugField(max_length=100)
     description = models.TextField(max_length=500 , blank=True)
