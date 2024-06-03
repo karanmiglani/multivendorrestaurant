@@ -15,5 +15,10 @@ urlpatterns = [
     # Food Item Crud
     path('menu-builder/food-item/add/' , views.addFoodItem , name = 'add-food-item'),
     path('menu-builder/food-item/edit/<int:pk>' , views.editFoodItem , name = 'edit-food-item'),
-    path('menu-builder/food-item/delete/<int:pk>' , views.deleteFoodItem , name = 'delete-food-item')
+    path('menu-builder/food-item/delete/<int:pk>' , views.deleteFoodItem , name = 'delete-food-item'),
+
+    # Opening Hours Crud
+    path('opening-hours/' , views.openingHours , name = 'opening-hours'),
+    path('opening-hours/add' , views.addOpeningHours , name = 'add-opening-hours'),
+    path('opening-hours/remove/<int:id>' , views.removeHours , name = 'remove-opening-hours')
 ]

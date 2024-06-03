@@ -175,5 +175,60 @@ $(document).ready(function(){
         $('#cgst').html(cgst)
         $('#total').html(grandTotal)
     }
+
+    $('.add_hour').on('click' , function(e){
+        e.preventDefault()
+       var day = document.getElementById('id_day').value
+       var from_hours = document.getElementById('id_from_hours').value
+       var to_hours = document.getElementById('id_to_hours').value
+       var is_closed = document.getElementById('id_is_closed').checked
+       var csrf_token = $('input[name=csrfmiddlewaretoken]').val()
+       var url = $(this).attr('data-url')
+       console.log(day , from_hours , to_hours , is_closed , csrf_token , url)
+       data = {
+        day : day,
+        from_hours : from_hours,
+        to_hours : to_hours,
+        is_closed : is_closed,
+        csrfmiddlewaretoken : csrf_token
+       }
+        if(is_closed){
+            is_closed = 'True'
+            condition = "day !=''"
+        }else{
+            is_closed = 'False'
+            condition = "day!='' && from_hours !='' && to_hours != ''"
+        }
+
+        if(eval(condition)){
+            $.ajax({
+                type : 'POST',
+                url : url ,
+                data : data,
+                success:function(resp){
+                    console.log(resp)
+                    if(resp.status == 200){
+                        var baseRemoveUrl = $('.opening_hours').attr('data-remove-url');
+                        baseRemoveUrl = baseRemoveUrl.replace('0', resp.id);
+                        if(resp.is_closed == 1){
+                            html = '<tr id="hour-' + resp.id +'"><td><b>'+resp.day+'</b></td><td>Closed</td><td><a href="'+ baseRemoveUrl +'" class="remove_hour" ">Remove</a></td> </tr>'
+                        }else{
+                            html = '<tr id="hour-' + resp.id +'"><td><b>'+resp.day+'</b></td><td>'+resp.from_hours+' - '+resp.to_hours+'</td><td><a href="'+ baseRemoveUrl+'" class="remove_hour">Remove</a></td> </tr>'
+                        }
+                        $('.opening_hours').append(html)
+                        document.getElementById('opening_hours').reset()
+                    }else{
+                        Swal.fire({title: 'Error!😵',text: resp.message,icon: 'error',confirmButtonText: 'OK'});
+                    }
+                },
+                error:function(e){
+                    console.log(e.responseText)
+                }
+            })
+        }
+    })
+
+
+
 })
 

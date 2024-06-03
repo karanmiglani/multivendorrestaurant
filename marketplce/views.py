@@ -6,6 +6,8 @@ from django.http import  JsonResponse ,HttpResponse
 from .models import Cart
 from onlinefood_main.context_processor import getCartCounter , getCartAmount
 from django.contrib.auth.decorators import login_required
+from vendor.models import OpeningHours
+from datetime import date , datetime
 # Create your views here.
 def marketPlace(request):
     vendors = Vendor.objects.filter(is_approved =  True , user__is_active = True)
@@ -25,6 +27,11 @@ def vendorDetails(request , slug):
             queryset = Product.objects.filter(is_available = True)
         )
     )
+    opening_hours = OpeningHours.objects.filter(vendor = vendor.id).order_by('day','from_hours')
+    # check current date
+    today_date = date.today()
+    today = today_date.isoweekday()
+    current_opening_hours = OpeningHours.objects.filter(vendor = vendor.id , day = today)
     if request.user.is_authenticated:
         cart_items = Cart.objects.filter(user = request.user)
     else:
@@ -33,6 +40,8 @@ def vendorDetails(request , slug):
         'vendor' : vendor,
         'categories' : categories,
         'cart_items': cart_items,
+        'opening_hours' : opening_hours,
+        'current_opening_hour' : current_opening_hours,
     }
     return render(request , 'marketplace/vendor_details.html' , context)
 
@@ -110,3 +119,7 @@ def cart(request):
         'cartItems':cartItems
     }
     return render(request , 'marketplace/cart.html',context)
+
+
+def search(request):
+    return HttpResponse('Search')

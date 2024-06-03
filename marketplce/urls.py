@@ -12,4 +12,7 @@ urlpatterns = [
     path('delete-cart-item/<int:cart_id>',views.deleteCartItem,name='delete-cart-item'),
     path('cart/', views.cart , name = 'cart'),
 
+    # Search
+    path('search/' , views.search , name = 'search')
+
 ]
