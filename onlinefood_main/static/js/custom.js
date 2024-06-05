@@ -42,10 +42,11 @@ $(document).ready(function(){
         data : data,
         success : function(resp){
             if(resp.status == 200){
+                console.log(resp)
                 $('#cart_counter').html(resp.cart_counter.cart_count)
                 $('#qty-'+ food_id).html(resp.qty)
                 // Subtotl and grand total tax
-                applyCartAmount(resp.cart_amount.subTotal , resp.cart_amount.sgst , resp.cart_amount.cgst , resp.cart_amount.grandTotal)
+                applyCartAmount(resp.cart_amount.subTotal ,  resp.cart_amount.tax_dict , resp.cart_amount.grandTotal)
                 Swal.fire({
                     title: 'Success!',
                     text: resp.message,
@@ -99,7 +100,7 @@ $(document).ready(function(){
                if(resp.status ==  200){
                 $('#cart_counter').html(resp.cart_counter.cart_count)
                 $('#qty-'+ food_id).html(resp.qty)
-                applyCartAmount(resp.cart_amount.subTotal , resp.cart_amount.sgst , resp.cart_amount.cgst , resp.cart_amount.grandTotal)
+                applyCartAmount(resp.cart_amount.subTotal ,  resp.cart_amount.tax_dict , resp.cart_amount.grandTotal)
                 if(window.location.pathname == '/marketplace/cart/'){
                     
                     removeCartItem(resp.qty , cart_id)
@@ -137,7 +138,7 @@ $(document).ready(function(){
                 $('#cart_counter').html(resp.cart_counter.cart_count)
                 removeCartItem(0 , cart_id)
                 checkEmptyCart()
-                applyCartAmount(resp.cart_amount.subTotal , resp.cart_amount.sgst , resp.cart_amount.cgst , resp.cart_amount.grandTotal)
+                applyCartAmount(resp.cart_amount.subTotal ,  resp.cart_amount.tax_dict , resp.cart_amount.grandTotal)
                 Swal.fire({title: 'Success!',text: resp.message,icon: 'success',confirmButtonText: 'OK'});
                }else if(resp.status == 204){Swal.fire({title: 'Oops!😲',text: resp.message,icon: 'warning',confirmButtonText: 'OK'});}
                 else if(resp.status == 404){Swal.fire({title: 'Error!😵',text: resp.message,icon: 'error',confirmButtonText: 'OK'});}
@@ -169,11 +170,14 @@ $(document).ready(function(){
         }
     }
 
-    function applyCartAmount(subTotal , sgst , cgst , grandTotal){
+    function applyCartAmount(subTotal , tax_dict , grandTotal){
         $('#subtotal').html(subTotal)
-        $('#sgst').html(sgst)
-        $('#cgst').html(cgst)
         $('#total').html(grandTotal)
+        for(key1 in tax_dict){
+            for(key2 in tax_dict[key1]){
+                $('#tax-'+key1).html(tax_dict[key1][key2])
+            }
+        }
     }
 
     $('.add_hour').on('click' , function(e){

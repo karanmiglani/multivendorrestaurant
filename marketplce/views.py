@@ -47,21 +47,26 @@ def vendorDetails(request , slug):
 
 
 def addToCart(request , p_id):
+    
     if request.user.is_authenticated:
         if request.headers.get('x-requested-with') == 'XMLHttpRequest':
             try:
+                print('cart amount is' ,getCartAmount(request))
                 product = Product.objects.get(id = p_id)
                 # check the user if already added to cart 
                 try:
+                    print('Hello')
                     checkCart = Cart.objects.get(user = request.user , product = product )
                     # Increase quantity
                     checkCart.qty += 1
                     checkCart.save()
+                    
                     return JsonResponse({'status' : 200,'message': 'Item added to cart' , 'cart_counter' : getCartCounter(request) ,'qty':checkCart.qty ,'cart_amount' : getCartAmount(request)})
                 except:
                     checkCart = Cart.objects.create(user = request.user , product = product , qty = 1)        
                     return JsonResponse({'status' : 200,'message': 'New Item added to cart','cart_counter' : getCartCounter(request) , 'qty':checkCart.qty , 'cart_amount' : getCartAmount(request)})
-            except:
+            except Exception as e:
+                print(str(e))
                 return JsonResponse({'status' : 404,'message': 'This item doesnot exists'})    
 
         else:

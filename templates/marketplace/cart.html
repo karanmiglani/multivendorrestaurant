@@ -81,20 +81,19 @@
                                             </span>
                                         </li>
                                         <hr>
-                                        <li style="list-style-type: none;">SGST
+                                        {% for key , value in tax_dict.items %}
+                                        {% for i , j in value.items %}
+                                        <li style="list-style-type: none;">
+                                            {{key}} <small>{{i}}</small>
                                             <span class="price float-right">
                                                 <span class="currency"><i class="fa fa-inr"></i></span>
-                                                <span id="sgst">0</span>
+                                                <span id="tax-{{key}}">{{j}}</span>
                                             </span>
+                                            <hr>
                                         </li>
-                                        <hr>
-                                        <li style="list-style-type: none;">CGST
-                                            <span class="price float-right">
-                                                <span class="currency"><i class="fa fa-inr"></i></span>
-                                                <span id="cgst">0</span>
-                                            </span>
-                                        </li>
-                                        <hr>
+                                        
+                                        {% endfor %}
+                                        {% endfor %}
                                         <li style="list-style-type: none; font-weight: 600;" class="text-danger">Total
                                             <span class="price float-right">
                                                 <span class="cuurency"><i class="fa fa-inr"></i></span>
