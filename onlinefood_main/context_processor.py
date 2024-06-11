@@ -3,6 +3,7 @@ from vendor.models import Vendor
 from django.conf import settings
 from marketplce.models import Cart , Tax
 from menu.models import Product
+from accounts.models import UserProfile
 
 def get_vendor(request):
     if not request.user.is_authenticated:
@@ -13,6 +14,16 @@ def get_vendor(request):
         vendor = None
     return {'vendor': vendor}
 
+
+def get_user_profile(request):
+    if not request.user.is_authenticated:
+        return {'user_profile' : None}
+    try:
+        user_profile = UserProfile.objects.get(user = request.user)
+        return {'user_profile' : user_profile}
+    except UserProfile.DoesNotExist:
+        user_profile = None
+        return {'user_profile' : user_profile}
 
 def get_goole_api_key(request):
     return {'ACCESS_TOKEN' : settings.ACCESS_TOKEN}

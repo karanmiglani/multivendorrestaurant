@@ -2,7 +2,7 @@
 {% load static %}
 {% block content %}
 <div class="main-section">
-    <div class="page-section restaurant-detail-image-section" style=" background: url({% static 'extra-images/cover-photo01.jpg' %}) no-repeat scroll 0 0 / cover;">
+    <div class="page-section restaurant-detail-image-section" style=" background: url({% if user_profile.cover_photo %}{{user_profile.cover_photo.url}}{% endif %}) no-repeat scroll 0 0 / cover;">
         <!-- Container Start -->
         {% include 'Customer/cover.html' %}
         <!-- Container End -->

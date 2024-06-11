@@ -8,15 +8,17 @@
                 <div class="company-info">
                     <div class="img-holder">
                         <figure>
-                            <img src="{% static 'extra-images/listing-logo18.png' %}" alt="">
+                            <img src="{% if user_profile.profile_picture %}{{user_profile.profile_picture.url}}{% endif %}" alt="" width="150" height="150">
                         </figure>
                     </div>
 
                     <div class="text-holder">
-                        <span class="restaurant-title">Customer name</span>
+                        <span class="restaurant-title">{{user.first_name}}&nbsp;{{user.last_name}}</span>
                         <div class="text">
-                            <i class="icon-location"></i>
-                            <p>Mark ricardo road, lane 27, Austin, Texas, USA.</p>
+                            <i class="fa-solid fa-location-dot"></i>
+                            <p style="mb-1">{{user_profile.address}}</p>
+                            <i class="fa-solid fa-phone-volume"></i>
+                            <p>{{user.phone_number}}</p>
                         </div>
                     </div>
                 </div>
