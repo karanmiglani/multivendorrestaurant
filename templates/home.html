@@ -33,13 +33,13 @@
 									<div class="field-holder">
 												<div class="foodbakery-locations-fields-group foodbakery-focus-out">
 													
-													<ge-autocomplete api_key="ge-50873fc6f0890c2d" required>
+													<ge-autocomplete id="search-auto" api_key="ge-50873fc6f0890c2d" required>
 														
 													</ge-autocomplete>
 												</div>
-												<input type="hidden" name="address" id="id_address">
-												<input type="hidden" name="lat" id="id_latitude">
-												<input type="hidden" name="long" id="id_longitude">
+												<input type="hidden" name="address" id="search-id-address">
+												<input type="hidden" name="lat" id="search-id-latitude">
+												<input type="hidden" name="long" id="search-id-longitude">
 										
 									</div>
 								</div>
@@ -116,9 +116,9 @@
 									<div class="img-holder">
 										<figure>
 											{% if v.user_profile.profile_picture %}
-									<a href="#"><img src="{{ v.user_profile.profile_picture.url }}" class="attachment-full size-full wp-post-image" alt=""></a>
+									<a href="{% url 'vendor-details' v.slug%}"><img src="{{ v.user_profile.profile_picture.url }}" class="attachment-full size-full wp-post-image" alt=""></a>
 									{% else %}
-									<a href="#"><img src="{% static 'images/default-profile' %}" class="attachment-full size-full wp-post-image" alt=""></a>
+									<a href="{% url 'vendor-details' v.slug%}"><img src="{% static 'images/default-profile' %}" class="attachment-full size-full wp-post-image" alt=""></a>
 									{% endif %}
 										</figure>
 										{% if not  v.is_open %}
@@ -146,8 +146,12 @@
 												
 											</h5>
 										</div>
-										{% if v.user_profile.city and  v.user_profile.state and  v.user_profile.pincode %}
-										<span> {{v.user_profile.city}},&nbsp;{{v.user_profile.state}}-{{v.user_profile.pincode}} </span>
+										{% if v.user_profile.address %}
+										<span> {{v.user_profile.address}}</span>
+										<br>
+										{% if v.kms %}
+										<span class="text-danger"> <b><i class="fa-solid fa-location-dot"></i>&nbsp;{{v.kms}} away from your location</b> </span>
+										{% endif %}
 										{% endif %}
 									</div>
 									

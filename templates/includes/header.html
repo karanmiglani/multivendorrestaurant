@@ -10,7 +10,7 @@
                         <div class="logo">
                             <figure>
                                 <a href="{% url 'home' %}" class="light-logo">
-                                    <img src="{% static 'logo/foodOnlineLogo.png' %}" alt="foodOnlineLogo" width='190'>
+                                    <img src="{% static 'logo/foodOnlineLogo.png' %}" alt="LoveForFoodLogo" width='190'>
                                 </a>
                             </figure>
                         </div>
@@ -18,14 +18,14 @@
                             <ul>
                                 <li class="location-has-children choose-location">
                                     <form action="#">
-                                        <input type="text" value="" name="location" id="location" placeholder="Your current location" autocomplete="off">
+                                        <input type="text" value="" name="location" id="current-location" placeholder="Your current location" autocomplete="off">
                                         <span id="foodbakery_radius_location_open" class="foodbakery-radius-location"><i class="icon-target5"></i></span>
                                     </form>
                                 </li>
                             </ul>
                         </div>
                     </div>
-                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 mb-3">
                         <div class="login-option">
                             <!-- Shopping cart count trolley -->
                             {% if user.is_authenticated %}

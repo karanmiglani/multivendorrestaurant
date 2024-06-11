@@ -29,29 +29,60 @@
 
 
 $(document).ready(function(){
-    console.log(window.location.pathname)
-    const el = document.querySelector('ge-autocomplete')
-    if(el != null){
-        el.addEventListener('select', (event) => {
-            console.log(event.detail)
-              if(window.location.pathname != '/'){
-                  
-              document.getElementById('id_country').value = event.detail.properties.country
-              document.getElementById('id_state').value = event.detail.properties.region
-              document.getElementById('id_city').value = event.detail.properties.locality
-              if(event.detail.properties.postalcode){
-                  document.getElementById('id_pincode').value = event.detail.properties.postalcode
-              }else{
-                  document.getElementById('id_pincode').value = ''
-              }
-              
-              }
-              document.getElementById('id_address').value = event.detail.properties.label
-              document.getElementById('id_latitude').value = event.detail.geometry.coordinates[1]
-              document.getElementById('id_longitude').value = event.detail.geometry.coordinates[0]
-          })
+    if(sessionStorage.getItem('current_location')){
+        document.getElementById('current-location').value = sessionStorage.getItem('current_location')
     }
-    
+    function getCurrentLocation(){
+        if(navigator.geolocation){
+            navigator.geolocation.getCurrentPosition(async (pos)=>{
+                var lat = pos.coords.latitude
+                var long = pos.coords.longitude
+                var apiKey = 'ge-50873fc6f0890c2d'
+                console.log(lat , long)
+                // var resp = await fetch('https://geocode.maps.co/reverse?lat='+lat+'&lon='+long+'&api_key=66680eeff0e9f808416099ubc5bf11d')
+                const url = `https://api.geocode.earth/v1/reverse?api_key=${apiKey}&point.lat=${lat}&point.lon=${long}`;
+                var resp = await fetch(url)
+                var resp = await resp.json()
+                var current_location = resp.features[0].properties.label
+                document.getElementById('current-location').value = current_location
+                sessionStorage.setItem('current_location',current_location)
+                window.location =  '?lat='+lat+'&long='+long
+            })
+        }
+    }
+    $('#foodbakery_radius_location_open').on('click', (e)=> {
+        e.preventDefault()
+        getCurrentLocation()
+    })
+    $('#current-address-autocomplete').on('select',(e)=> {
+        e.preventDefault()
+        document.getElementById('current_id_address').value = e.detail.properties.label
+        document.getElementById('current_id_lat').value = e.detail.geometry.coordinates[1]
+        document.getElementById('current_id_long').value = e.detail.geometry.coordinates[0]
+    })
+
+    $('#search-auto').on('select',(e)=> {
+        e.preventDefault()
+        document.getElementById('search-id-address').value = e.detail.properties.label
+        document.getElementById('search-id-latitude').value = e.detail.geometry.coordinates[1]
+        document.getElementById('search-id-longitude').value = e.detail.geometry.coordinates[0]
+    })
+
+
+    $('#profile-auto').on('select' ,(event)=> {
+        document.getElementById('id_country').value = event.detail.properties.country
+        document.getElementById('id_state').value = event.detail.properties.region
+        document.getElementById('id_city').value = event.detail.properties.locality
+        if(event.detail.properties.postalcode){
+            document.getElementById('id_pincode').value = event.detail.properties.postalcode
+        }else{
+            document.getElementById('id_pincode').value = ''
+        }
+        document.getElementById('id_address').value = event.detail.properties.label
+        document.getElementById('id_latitude').value = event.detail.geometry.coordinates[1]
+        document.getElementById('id_longitude').value = event.detail.geometry.coordinates[0]
+    })
+
 
 
 
