@@ -56,7 +56,13 @@
                                             </div>
                                             {% if v.user_profile.address %}
                                             <span><small class="text-muted d-block mb-3">{{ v.user_profile.address }} , {{v.user_profile.city}}&nbsp;({{v.user_profile.state }})</small></span> {% endif %}
+                                            <br>
+                                            {% if source_location %}
+                                            <span><small class="d-block mb-3 text-danger" style="font-size: 12px;"><b>{{v.kms}}km away from {{source_location}}</b></small></span>
+                                            {% endif %}
                                         </div>
+                                        <br>
+                                       
                                         <div class="list-option">
 
                                             <a href="{% url 'vendor-details' v.slug%}" class="viewmenu-btn text-color">View Menu</a>

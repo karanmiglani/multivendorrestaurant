@@ -22,7 +22,7 @@ class UserForm(forms.ModelForm):
 class UserProfileForm(forms.ModelForm):
     profile_picture = forms.FileField(widget=forms.FileInput(attrs={'class' : 'btn btn-info'}) , validators=[allow_only_images_validator])
     cover_photo = forms.FileField(widget=forms.FileInput(attrs={'class' : 'btn btn-info'}), validators=[allow_only_images_validator])
-    address = forms.CharField(widget=forms.TextInput(attrs={'placeholder' :'Start Typing...','required':'required'}))
+    address = forms.CharField(widget=forms.TextInput(attrs={'placeholder' :'Start Typing...','required':'required','readonly':'readonly'}))
     # latitude = forms.CharField(widget=forms.TextInput(attrs={'readonly': 'readonly'}))
     # longitude = forms.CharField(widget=forms.TextInput(attrs={'readonly': 'readonly'}))
     class Meta:
@@ -32,6 +32,6 @@ class UserProfileForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field_name in self.fields.keys():
-            if field_name == 'latitude' or field_name == 'longitude':
-                self.fields[field_name].widget.attrs['readonly'] = 'readonly'
+            if field_name == 'latitude' or field_name == 'longitude' or field_name == 'address':
+                self.fields[field_name].widget.attrs['readonly'] = True
 

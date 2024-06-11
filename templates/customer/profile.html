@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="main-section">
+    <div class="page-section restaurant-detail-image-section" style=" background: url({% static 'extra-images/cover-photo01.jpg' %}) no-repeat scroll 0 0 / cover;">
+        <!-- Container Start -->
+        {% include 'Customer/cover.html' %}
+        <!-- Container End -->
+    </div>
+    <div class="page-section account-header buyer-logged-in">
+        {% include 'includes/alerts.html' %}
+        <div class="container">
+            <div class="row">
+            {% include 'includes/customer_sidebar.html' %}
+            
+                <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+                    <div class="user-dashboard loader-holder">
+                        <div class="user-holder">
+                            
+                         <h5 class="text-uppercase">Profile Settings</h5>
+                          
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

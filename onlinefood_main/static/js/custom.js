@@ -29,6 +29,32 @@
 
 
 $(document).ready(function(){
+    console.log(window.location.pathname)
+    const el = document.querySelector('ge-autocomplete')
+    if(el != null){
+        el.addEventListener('select', (event) => {
+            console.log(event.detail)
+              if(window.location.pathname != '/'){
+                  
+              document.getElementById('id_country').value = event.detail.properties.country
+              document.getElementById('id_state').value = event.detail.properties.region
+              document.getElementById('id_city').value = event.detail.properties.locality
+              if(event.detail.properties.postalcode){
+                  document.getElementById('id_pincode').value = event.detail.properties.postalcode
+              }else{
+                  document.getElementById('id_pincode').value = ''
+              }
+              
+              }
+              document.getElementById('id_address').value = event.detail.properties.label
+              document.getElementById('id_latitude').value = event.detail.geometry.coordinates[1]
+              document.getElementById('id_longitude').value = event.detail.geometry.coordinates[0]
+          })
+    }
+    
+
+
+
     $('.add-to-cart').on('click',function(e){
         e.preventDefault();
        food_id = $(this).attr('data-id')
@@ -235,4 +261,3 @@ $(document).ready(function(){
 
 
 })
-
