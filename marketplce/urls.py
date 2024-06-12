@@ -13,6 +13,9 @@ urlpatterns = [
     path('cart/', views.cart , name = 'cart'),
 
     # Search
-    path('search/' , views.search , name = 'search')
+    path('search/' , views.search , name = 'search'),
+
+    # Checkout
+    path('checkout/' , views.checkOut , name = 'checkout'),
 
 ]

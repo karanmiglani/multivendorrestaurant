@@ -1,4 +1,5 @@
 from django.shortcuts import render , redirect , get_object_or_404
+from accounts.models import UserProfile
 from vendor.models import Vendor
 from menu.models import Category , Product
 from django.db.models import Prefetch
@@ -12,6 +13,7 @@ from django.db.models import Q
 from django.contrib.gis.geos import GEOSGeometry
 from django.contrib.gis.measure import D
 from django.contrib.gis.db.models.functions import Distance
+from orders.forms import OrderForm
 # Create your views here.
 def marketPlace(request):
     vendors = Vendor.objects.filter(is_approved =  True , user__is_active = True)
@@ -154,3 +156,30 @@ def search(request):
         'source_location' : address
     }
     return render(request , 'marketplace/listings.html' , context)
+
+@login_required(login_url='login')
+def checkOut(request):
+    cartItems = Cart.objects.filter(user = request.user).order_by('created_at')
+    cart_count = cartItems.count()
+    if cart_count <= 0:
+        return redirect('market-place')
+    user_profile = UserProfile.objects.get(user = request.user)
+    default_values = {
+        'first_name' : request.user.first_name,
+        'last_name' : request.user.last_name,
+        'phone' : request.user.phone_number,
+        'email' : request.user.email,
+        'address' : user_profile.address,
+        'country' : user_profile.country,
+        'state' : user_profile.state,
+        'city' : user_profile.city,
+        'pincode':  user_profile.pincode,
+    }
+    form = OrderForm(initial=default_values)
+    
+    context = {
+        'form' : form,
+        'cartItems' : cartItems,
+        'cart_count' : cart_count
+    }
+    return render(request , 'marketplace/checkout.html', context)

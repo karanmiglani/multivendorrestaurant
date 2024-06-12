@@ -289,6 +289,27 @@ $(document).ready(function(){
         }
     })
 
+$('#place-order').on('click' , (e)=> {
+    // e.preventDefault()
+    var paymentMethod = $("input[name='payment_method']:checked").val()
+    if(!paymentMethod){
+        document.getElementById('payment-method-error').style.display = 'block'
+        document.getElementById('payment-method-error').innerHTML = '<b>Select Payment Method</b>'
+        return false
+    }else{
+       var conf = confirm('You have selected '+ paymentMethod + ' as your preffered payment method.\n Click Ok to continue')
+       if(conf){
+        return true
+       }else{
+        return false
+       }
+    }
+    
+})
+
+$("input[name='payment_method']").on('change' , (e) => {
+    document.getElementById('payment-method-error').style.display = 'none'
+})
 
 
 })

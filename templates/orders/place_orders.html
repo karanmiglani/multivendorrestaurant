@@ -10,7 +10,7 @@
                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
                     <div class="tabs-holder horizontal">
                         <ul class="stickynav-tabs nav nav-tabs">
-                            <li class="active"><a data-toggle="tab" href="#home"><i class="fa-solid fa-bag-shopping"></i>Cart Items</a></li>
+                            <li class="active"><a data-toggle="tab" href="#home"><i class="fa-solid fa-bag-shopping"></i>Review your Billing Address</a></li>
                             
                         </ul>
                         
@@ -18,42 +18,24 @@
                         <div class="tab-content">
                             <div id="home" class="tab-pane in active">
                                 <div class="menu-itam-holder">
-                                    <div class="text-center p-5" id="empty-cart" style="display: none;">
-                                        <h3>Cart is empty</h3>
-                                      </div>
                                     <div id="menu-item-list-6272" class="menu-itam-list">
                                         
-                                     {% if cartItems %}
-                                        <ul>
-                                            {% for item in cartItems %}
-                                            <li id="cart-item-{{item.id}}">
-                                                <div class="image-holder"><img src="{% if item.product.image %}{{item.product.image.url}}{% endif %}" alt=""></a></div>
-                                                <div class="text-holder">
-                                                    <h6>{{item.product}}</h6>
-                                                    <a href="{% url 'vendor-details' item.product.vendor.slug %}" class="badge badge-success">{{item.product.vendor}}</a>
-                                                </div>
-                                                
-                                                <div class="price-holder" style="cursor: pointer;">
-                                                    <span class="price text-danger" style="font-size: 18px;" > <b><span style="font-size: 15px;"><i class="fa fa-inr"></i></span> {{ item.product.price }}</b></span>
-                                                    <a  class="decrease-from-cart" data-id="{{item.product.id}}"  id="{{item.id}}" data-url="{% url 'decrease-cart' item.product.id %}" style="margin-right: 20px; cursor: pointer;"><i class="icon-minus text-color"></i></a>
-                                                    <label for="qty" id="qty-{{item.product.id}}">0</label>
-                                                    <a style="cursor: pointer;" class="add-to-cart"  data-id="{{item.product.id}}" data-url ="{% url 'add-to-cart' item.product.id %}"><i class="icon-plus4 text-color"></i></a>
-                                                    <a style="cursor: pointer;" class="delete-cart-item"  data-id="{{item.id}}" data-url ="{% url 'delete-cart-item' item.id %}"><i class="icon-delete text-color"></i></a>
-                                                    <span id="add-menu-loader-10"></span>
-                                                </div>
-                                            </li>
-                                           {% endfor %}
-                                        </ul>
-                                       {% else %}
-                                      <div class="text-center p-5">
-                                        <h3>Cart is empty</h3>
-                                      </div>
-                                       {% endif %}
+                                    <div class="billing-address">
+                                        <div><b>{{order.name}}</b></div>
+                                        <div><b>{{order.address}}</b></div>
+                                        <div><b>{{order.city}},{{order.state}}-{{order.pincode}}</b></div>
+                                        <div><b>Phone:{{order.phone}}</b></div>
+                                        <div><b>Email:{{order.email}}</b></div>
+                                        <div><b>Payment Method:{{order.payment_method}}</b></div>
+                                        <div><b>Order Number:{{order.order_number}}</b></div>
+                                        <br>
+                                        <div><a href="{% url 'checkout' %}" class="btn btn-outline-danger">Edit</a> </div>
+                                        <br>
                                     </div>
-                                    {% for i in cartItems%}
-                                    <span id="qty-{{i.product.id}}" class="item_qty d-none" data-qty="{{i.qty}}">{{i.qty}}</span>
+                                        
                                     
-                                    {% endfor %}
+                                    </div>
+                                    
                                 </div>
                             </div>
                             
@@ -73,6 +55,21 @@
                             <div id="home" class="tab-pane in active">
                               <div class="menu-item-holder">
                                 <div style="padding: 10px; margin: 10px;">
+                                    <div>
+                                        <table class="table no-border">
+                                            <tbody>
+                                                {% for item in cart_item %}
+                                                <tr>
+                                                    <td><img src="{{item.product.image.url}}" alt="{{item.product.product_title}}" width="20" height="20"></td>
+                                                    <td class="nowrap" style=" text-overflow: ellipsis; overflow: hidden; " >{{item.product.product_title}}</td>
+                                                    <td class="nowrap" ><b>{{item.qty}}</b></td>
+                                                    <td class="nowrap"><b>{{item.product.price}}</b></td>
+                                                   
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
                                     <ul>
                                         <li style="list-style-type: none;">Subtotal
                                             <span class="price float-right">
@@ -102,7 +99,7 @@
                                         </li>
                                         <hr>
                                         <span class="price text-center mb-3">
-                                            <a href="{% url 'checkout' %}" class="btn btn-danger w-100 p-2">Proceed To Checkout</a>
+                                            <a href="{% url 'payment' order.order_number %}" class="btn btn-danger w-100 p-2">Pay Now</a>
                                         </span>
                                     </ul>
                                     
