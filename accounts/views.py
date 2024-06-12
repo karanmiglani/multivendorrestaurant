@@ -10,6 +10,7 @@ from django.core.exceptions import PermissionDenied
 from django.utils.http import urlsafe_base64_decode
 from django.contrib.auth.tokens import default_token_generator
 from vendor.models import Vendor
+from orders.models import OrderModel
 # Create your views here.
 
 # restrict vendor from accessing the cutomer page
@@ -210,7 +211,14 @@ def myAccount(request):
 @login_required(login_url='login')
 @user_passes_test(check_role_customer)
 def customerDashboard(request):
-    return render(request , 'accounts/customer_dashboard.html')
+    orders = OrderModel.objects.filter(user = request.user , is_ordered = True)
+    recent_order = orders[:5]
+    context = {
+        'orders' : orders,
+        'orders_count' : orders.count(),
+        'recent_orders' : recent_order
+    }
+    return render(request , 'accounts/customer_dashboard.html',context)
 
 
 @login_required(login_url='login')

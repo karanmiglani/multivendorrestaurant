@@ -66,7 +66,7 @@ def payment(request , oid):
     #send order confirmation email to the customer
     #send order recieve email to the vendor
     # Clear the cart on payment successfull
-    # cartItems.delete()
+    cartItems.delete()
     return redirect(reverse('complete-order', kwargs={'oid':oid,'txn_id':txn_id}))
 
 def completeOrder(request , oid , txn_id):
@@ -77,7 +77,7 @@ def completeOrder(request , oid , txn_id):
         for item in ordered_food:
             subtotal += (item.price * item.qty)
         tax_data = json.loads(order.tax_data)
-        print(tax_data)
+
         context = {
         'order_number' : oid,
         'txn_id' : txn_id,
