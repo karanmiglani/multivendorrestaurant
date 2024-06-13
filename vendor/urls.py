@@ -20,5 +20,11 @@ urlpatterns = [
     # Opening Hours Crud
     path('opening-hours/' , views.openingHours , name = 'opening-hours'),
     path('opening-hours/add' , views.addOpeningHours , name = 'add-opening-hours'),
-    path('opening-hours/remove/<int:id>' , views.removeHours , name = 'remove-opening-hours')
+    path('opening-hours/remove/<int:id>' , views.removeHours , name = 'remove-opening-hours'),
+
+    # dashboard
+    path('vendor-order-details/<oid>' , views.orderDetails , name = 'vendor-order-details'),
+    path('my-orders',views.myOrders , name = 'vendor-my-orders')
+
+
 ]

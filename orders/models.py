@@ -1,8 +1,12 @@
 from django.db import models
 from accounts.models import User
-from marketplce.models import Product
+from marketplce.models import Product 
+from vendor.models import Vendor
+import simplejson as json
 # Create your models here.
 
+
+request_object = ''
 
 class Payment(models.Model):
     PAYMENT_METHOD =(
@@ -31,6 +35,7 @@ class OrderModel(models.Model):
     )
     user = models.ForeignKey(User , on_delete=models.SET_NULL , null=True)
     payment = models.ForeignKey(Payment , on_delete=models.CASCADE , blank=True , null=True)
+    vendors = models.ManyToManyField(Vendor ,blank=True)
     order_number = models.CharField(max_length=100)
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
@@ -43,6 +48,7 @@ class OrderModel(models.Model):
     pin_code = models.CharField(max_length=50)
     total = models.FloatField()
     tax_data = models.JSONField(blank=True, help_text="Data Format:{'tax_type' : {'tax_percentage':'tax_amount'}}")
+    total_data = models.JSONField(blank=True , null=True)
     total_tax = models.FloatField()
     payment_method = models.CharField(max_length=50)
     order_status = models.CharField(max_length=50 ,choices=STATUS , default='New')
@@ -56,6 +62,42 @@ class OrderModel(models.Model):
     @property
     def name(self):
         return f'{self.first_name} {self.last_name}'
+    
+    def order_placed_to(self):
+        return ",".join([str(i) for i in self.vendors.all()])
+    
+    def get_total_by_vendor(self):
+        try:
+            vendor = Vendor.objects.get(user = request_object.user)
+            subTotal = 0.0
+            tax = 0
+            tax_dict = {}
+            if self.total_data:
+                total_data = json.loads(self.total_data)
+                data = total_data.get(str(vendor.id))
+                
+                for key , value in data.items():
+                    key = float(key)
+                    subTotal = subTotal + float(key)
+                    value = value.replace("'",'"')
+                    value = json.loads(value)
+                    tax_dict.update(value)
+                    for i in value:
+                        for j in value[i]:
+                            print(value[i][j])
+                            tax += float(value[i][j])
+                grandTotal = float(subTotal) + float(tax)
+            context = {
+                'subTotal' : subTotal,
+                'tax_dict' : tax_dict,
+                'tax' : tax,
+                'grandTotal' : grandTotal
+
+            }
+        except Exception as e:
+            print('error',str(e))
+        return context
+        
     
     def __str__(self):
         return self.order_number

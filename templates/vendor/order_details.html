@@ -36,12 +36,11 @@
                 <hr>
                 <table class="table" style="border: none !important;">
                     <tbody>
-                        {% for item in orderedFood %}
+                        {% for item in ordered_food %}
                         <tr>
-                            <td style="border: none !important;" ><img src="{{item.foodItem.image.url}}" alt="{{item.foodItem.product_title}}" width="50" height="50"></td>
+                            <td style="border: none !important;" ><img src="{{item.foodItem.image.url}}" alt="{{item.foodItem.product_title}}" width="75" height="75"></td>
                             <td  style="border: none !important;" class="nowrap" style=" text-overflow: ellipsis; overflow: hidden; " >
                               <p class="mb-0"><b>{{item.foodItem.product_title}} X {{item.qty}}</b></p>  
-                              <p><a href="{% url 'vendor-details' item.foodItem.vendor.slug %}"><span class="badge badge-warning">{{item.foodItem.vendor.vendor_name}}</span></a></p>
                             </td>
                             <td style="border: none !important;"  class="nowrap"><b>{{item.foodItem.price}}</b></td>
                            
@@ -58,7 +57,7 @@
                             <li style="list-style-type: none;">Subtotal
                                 <span class="price float-right">
                                     <span class="currency"><i class="fa fa-inr"></i></span>
-                                    <span id="subtotal">{{subTotal}}</span>
+                                    <span id="subtotal">{{subtotal}}</span>
                                 </span>
                             </li>
                             <hr>
@@ -75,10 +74,17 @@
                             
                             {% endfor %}
                             {% endfor %}
+                            <li style="list-style-type: none; font-weight: 600;" class="text-danger">Total Tax
+                                <span class="price float-right">
+                                    <span class="cuurency"><i class="fa fa-inr"></i></span>
+                                    <span id="total" class="text-danger">{{total_tax}}</span>
+                                </span>
+                            </li>
+                            <hr>
                             <li style="list-style-type: none; font-weight: 600;" class="text-danger">Total
                                 <span class="price float-right">
                                     <span class="cuurency"><i class="fa fa-inr"></i></span>
-                                    <span id="total" class="text-danger">{{order.total}}</span>
+                                    <span id="total" class="text-danger">{{grandTotal}}</span>
                                 </span>
                             </li>
                         </ul>

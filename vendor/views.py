@@ -12,7 +12,7 @@ from django.template.defaultfilters import slugify
 from.errors import handle_category_name_unique_constraints , handle_product_unique_constraints
 from django.db import IntegrityError
 from django.http import HttpResponse , JsonResponse
-
+from orders.models import OrderedFood , OrderModel
 
 # Create your views here.
 def getVendor(request):
@@ -235,3 +235,27 @@ def removeHours(request , id=None):
         messages.add_message(request , messages.SUCCESS , f'Opneing hours for {day} removed successfuly!')
         return redirect('opening-hours')
 
+def orderDetails(request , oid):
+    try:
+        order = OrderModel.objects.get(order_number = oid , is_ordered = True)
+        ordered_food = OrderedFood.objects.filter(order = order , foodItem__vendor = getVendor(request))
+        context = {
+            'order' : order,
+            'ordered_food' : ordered_food,
+            'subtotal' : order.get_total_by_vendor()['subTotal'],
+            'tax_data' : order.get_total_by_vendor()['tax_dict'],
+            'total_tax' : order.get_total_by_vendor()['tax'],
+            'grandTotal' : order.get_total_by_vendor()['grandTotal'],
+        }
+        return render(request , 'vendor/order_details.html' , context)
+    except Exception as e:
+        print(str(e))
+        return redirect('vendorDashboard')
+    
+def myOrders(request):
+    vendor = Vendor.objects.get(user = request.user)
+    order = OrderModel.objects.filter(vendors__in=[vendor.id] , is_ordered = True).order_by('-created_at')
+    context = {
+        'orders' : order,
+    }
+    return render(request , 'vendor/my_orders.html',context)

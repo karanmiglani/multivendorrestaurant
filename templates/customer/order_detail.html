@@ -41,6 +41,7 @@
                             <td style="border: none !important;" ><img src="{{item.foodItem.image.url}}" alt="{{item.foodItem.product_title}}" width="75" height="75"></td>
                             <td  style="border: none !important;" class="nowrap" style=" text-overflow: ellipsis; overflow: hidden; " >
                               <p class="mb-0"><b>{{item.foodItem.product_title}} X {{item.qty}}</b></p>  
+                              <p><a href="{% url 'vendor-details' item.foodItem.vendor.slug %}"><span class="badge badge-warning">{{item.foodItem.vendor.vendor_name}}</span></a></p>
                             </td>
                             <td style="border: none !important;"  class="nowrap"><b>{{item.foodItem.price}}</b></td>
                            

@@ -1,18 +1,40 @@
+from collections import defaultdict
+from decimal import Decimal
 from django.shortcuts import render , redirect
 from marketplce.views import Cart
 from onlinefood_main.context_processor import getCartAmount
 from .forms import OrderForm
 from .models import OrderModel , Payment , OrderedFood
+from menu.models import Product 
+from marketplce.models import Tax
 import simplejson as json
 from .utils import generate_order_number , generate_transaxtion_id
 from django.http import HttpResponse
 from django.urls import reverse
 # Create your views here.
 def placeOrder(request):
-    cartItems = Cart.objects.filter(user = request.user)
-    cart_count = cartItems.count()
-    if cart_count <= 0:
-        return redirect(request , 'market-place')
+
+    cartItems = Cart.objects.filter(user = request.user).select_related('product__vendor')
+    if cartItems.count() <= 0:
+        return redirect('market-place')
+    get_tax_data = Tax.objects.filter(is_active = True)
+    # Initialize data structures
+    vendor_ids = set()
+    vendor_subtotal = defaultdict(float)
+    total_data = {}
+    subtotal = 0
+    for item in cartItems:
+        vendor_id = item.product.vendor.id
+        vendor_ids.add(vendor_id)
+        subtotal = float(item.qty * item.product.price)
+        vendor_subtotal[vendor_id] += subtotal
+        tax_dict = {}
+        for i in get_tax_data:
+            tax_type = i.tax_type
+            tax_percenatge = i.tax_percentage
+            tax_amount = round((vendor_subtotal[vendor_id] * float(tax_percenatge))/100, 2)
+            tax_dict.update({tax_type:{str(tax_percenatge) : str(tax_amount)}})
+        total_data.update({vendor_id:{str(vendor_subtotal[vendor_id]): str(tax_dict)}})
     subTotal = getCartAmount(request)['subTotal']
     totalTax = getCartAmount(request)['tax']
     grandTotal = getCartAmount(request)['grandTotal']
@@ -37,6 +59,8 @@ def placeOrder(request):
             order.payment_method = form.cleaned_data['payment_method']
             order.save()
             order.order_number = generate_order_number(request , pk =order.id)
+            order.vendors.add(*vendor_ids)
+            order.total_data = json.dumps(total_data)
             order.save()
             context = {
                 'order' : order,
